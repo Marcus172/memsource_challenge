@@ -3,6 +3,6 @@
 // @flow
 
 export default {
-  appName: 'memsource_challenge',
-  displayName: 'Memsource interview challenge',
+    appName: 'memsource_challenge',
+    displayName: 'Memsource interview challenge',
 };

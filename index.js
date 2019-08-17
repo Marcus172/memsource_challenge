@@ -2,7 +2,7 @@
 
 // @flow
 
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import appConfig from 'config/appConfig.js';
 import App from 'components/App.js';
 
