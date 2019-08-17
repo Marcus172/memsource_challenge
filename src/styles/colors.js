@@ -12,4 +12,6 @@ export default {
     textInputBorderColor: '#eaeaea',
     textInputBackgroundColor: '#fafafa',
     buttonBackgroundColor: '#3897f1',
+    buttonDisabledBackgroundColor: 'rgba(56, 151, 241, 0.6)',
+    errorBackground: '#FD2B4F',
 };
