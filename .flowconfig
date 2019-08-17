@@ -42,6 +42,12 @@ munge_underscores=true
 module.name_mapper='^react-native$' -> '<PROJECT_ROOT>/Libraries/react-native/react-native-implementation'
 module.name_mapper='^react-native/\(.*\)$' -> '<PROJECT_ROOT>/\1'
 module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> '<PROJECT_ROOT>/Libraries/Image/RelativeImageStub'
+module.name_mapper='^assets/\(.*\)$' -> '<PROJECT_ROOT>/src/assets/\1'
+module.name_mapper='^components/\(.*\)$' -> '<PROJECT_ROOT>/src/components/\1'
+module.name_mapper='^config/\(.*\)$' -> '<PROJECT_ROOT>/src/config/\1'
+module.name_mapper='^containers/\(.*\)$' -> '<PROJECT_ROOT>/src/containers/\1'
+module.name_mapper='^stores/\(.*\)$' -> '<PROJECT_ROOT>/src/stores/\1'
+module.name_mapper='^styles/\(.*\)$' -> '<PROJECT_ROOT>/src/styles/\1'
 
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
