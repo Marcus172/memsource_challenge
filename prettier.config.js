@@ -5,12 +5,4 @@ module.exports = {
     tabWidth: 4,
     semi: true,
     singleQuote: true,
-    overrides: [
-        {
-            files: '*.js',
-            options: {
-                parser: 'flow',
-            },
-        },
-    ],
 };

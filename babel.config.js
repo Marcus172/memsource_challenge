@@ -10,10 +10,12 @@ module.exports = {
                     components: './src/components',
                     config: './src/config',
                     containers: './src/containers',
+                    managers: './src/managers',
                     stores: './src/stores',
                     styles: './src/styles',
                 },
             },
         ],
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
     ],
 };

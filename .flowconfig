@@ -46,6 +46,7 @@ module.name_mapper='^assets/\(.*\)$' -> '<PROJECT_ROOT>/src/assets/\1'
 module.name_mapper='^components/\(.*\)$' -> '<PROJECT_ROOT>/src/components/\1'
 module.name_mapper='^config/\(.*\)$' -> '<PROJECT_ROOT>/src/config/\1'
 module.name_mapper='^containers/\(.*\)$' -> '<PROJECT_ROOT>/src/containers/\1'
+module.name_mapper='^managers/\(.*\)$' -> '<PROJECT_ROOT>/src/managers/\1'
 module.name_mapper='^stores/\(.*\)$' -> '<PROJECT_ROOT>/src/stores/\1'
 module.name_mapper='^styles/\(.*\)$' -> '<PROJECT_ROOT>/src/styles/\1'
 
