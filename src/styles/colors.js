@@ -9,4 +9,7 @@ export default {
     light: '#DAE1E7',
     dark: '#444',
     black: '#000',
+    textInputBorderColor: '#eaeaea',
+    textInputBackgroundColor: '#fafafa',
+    buttonBackgroundColor: '#3897f1',
 };

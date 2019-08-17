@@ -4,5 +4,5 @@
 
 export default {
     appName: 'memsource_challenge',
-    displayName: 'Memsource interview challenge',
+    displayName: 'Memsource interview challenge by Marek Rom',
 };

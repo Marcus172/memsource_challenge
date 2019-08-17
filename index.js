@@ -8,6 +8,6 @@ import App from 'containers/App.js';
 import appConfig from 'config/appConfig.js';
 import StoreManager from 'managers/storeManager.js';
 
-StoreManager.init();
-
 AppRegistry.registerComponent(appConfig.appName, () => App);
+
+StoreManager.init();

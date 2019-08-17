@@ -2,8 +2,6 @@
 
 // @flow
 
-import { observable } from 'mobx';
-
 import AppStore from 'stores/appStore.js';
 import navigationService from 'managers/navigationService.js';
 import User from 'stores/models/User.js';

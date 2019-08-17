@@ -7,40 +7,54 @@ import { StyleSheet } from 'react-native';
 import colors from 'styles/colors.js';
 
 export default StyleSheet.create({
-    scrollView: {
-        backgroundColor: colors.lighter,
+    containerView: {
+        flex: 1,
     },
-    engine: {
-        position: 'absolute',
-        right: 0,
+    loginScreenContainer: {
+        flex: 1,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
-    body: {
-        backgroundColor: colors.white,
+    logo: {
+        marginTop: 70,
+        width: '100%',
     },
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
+    logoText: {
+        fontSize: 28,
+        fontWeight: '800',
+        marginBottom: 30,
+        textAlign: 'center',
+        color: colors.dark,
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: colors.black,
+    loginFormView: {
+        flex: 1,
     },
-    sectionDescription: {
-        marginTop: 8,
+    loginFormTextInput: {
+        height: 43,
+        fontSize: 14,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: colors.textInputBorderColor,
+        backgroundColor: colors.textInputBackgroundColor,
+        paddingLeft: 10,
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 5,
+        marginBottom: 5,
+    },
+    loginButton: {
+        backgroundColor: colors.buttonBackgroundColor,
+        borderRadius: 5,
+        height: 45,
+        marginTop: 30,
+        paddingLeft: 10,
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 5,
+    },
+    buttonText: {
         fontSize: 18,
-        fontWeight: '400',
-        color: colors.dark,
-    },
-    highlight: {
-        fontWeight: '700',
-    },
-    footer: {
-        color: colors.dark,
-        fontSize: 12,
         fontWeight: '600',
-        padding: 4,
-        paddingRight: 12,
-        textAlign: 'right',
+        color: colors.white,
     },
 });

@@ -15,9 +15,15 @@ const AppNavigator = createStackNavigator(
         },
         Login: {
             screen: LoginScreen,
+            navigationOptions: {
+                header: null,
+            },
         },
         Splash: {
             screen: SplashScreen,
+            navigationOptions: {
+                header: null,
+            },
         },
     },
     {
