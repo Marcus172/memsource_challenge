@@ -16,6 +16,7 @@ class SplashScreenContainer extends PureComponent<TProps> {
         return (
             <SplashScreen
                 appInitialized={appManager.getAppInitializedObservable()}
+                user={appManager.getUser()}
             />
         );
     }

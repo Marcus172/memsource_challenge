@@ -8,11 +8,13 @@ import { withNavigation } from 'react-navigation';
 import React, { PureComponent } from 'react';
 
 import styles from 'styles/SplashScreen.style.js';
+import User from 'stores/models/User.js';
 
 import type { NavigationScreenProp, NavigationState } from 'react-navigation';
 
 type TProps = {
     appInitialized: boolean,
+    user: User,
     navigation: NavigationScreenProp<NavigationState>,
 };
 
@@ -28,7 +30,8 @@ class SplashScreen extends PureComponent<TProps> {
 
     checkInitialized = () => {
         if (this.props.appInitialized) {
-            this.props.navigation.replace('Login');
+            const route = this.props.user == null ? 'Login' : 'Projects';
+            this.props.navigation.replace(route);
         }
     };
 

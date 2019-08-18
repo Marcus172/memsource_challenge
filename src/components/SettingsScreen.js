@@ -13,11 +13,15 @@ import styles from 'styles/SettingsScreen.style.js';
 import User from 'stores/models/User.js';
 
 type TProps = {
-    user: User,
+    user: User | null,
 };
 
 class SettingsScreen extends PureComponent<TProps> {
     render() {
+        if (this.props.user == null) {
+            return null;
+        }
+
         return (
             <View style={styles.container}>
                 <Headline>Settings</Headline>

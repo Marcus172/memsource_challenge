@@ -103,18 +103,9 @@ class AppManager {
     }
 
     logout() {
-        apiManager
-            .logout(this.userStore.user.token)
-            .then(response => {
-                navigationManager.reset();
-                this.userStore.deleteUser();
-            })
-            .catch((e: TResponseError) => {
-                console.warn(
-                    'AppManager: something went wrong during logout promise',
-                    e,
-                );
-            });
+        apiManager.logout(this.userStore.user.token);
+        this.userStore.deleteUser();
+        navigationManager.reset();
     }
 }
 

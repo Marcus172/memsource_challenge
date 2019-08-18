@@ -108,12 +108,12 @@ class ApiManager {
     }
 
     logout(token: string) {
-        return ApiManager.makePOSTRequest('api2/v1/auth/logout', { token })
+        ApiManager.makePOSTRequest('api2/v1/auth/logout', { token })
             .then(response => {
                 console.debug('ApiManager: Logout responded with', response);
             })
             .catch((e: TError) => {
-                return ApiManager.processError(e);
+                ApiManager.processError(e);
             });
     }
 
