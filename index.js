@@ -6,8 +6,8 @@ import { AppRegistry } from 'react-native';
 
 import App from 'containers/App.js';
 import appConfig from 'config/appConfig.js';
-import StoreManager from 'managers/storeManager.js';
+import AppManager from 'managers/appManager.js';
 
 AppRegistry.registerComponent(appConfig.appName, () => App);
 
-StoreManager.init();
+AppManager.init();

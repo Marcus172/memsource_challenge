@@ -6,7 +6,7 @@ import { SafeAreaView, StatusBar, View } from 'react-native';
 import { observer } from 'mobx-react';
 import React, { Component, Fragment } from 'react';
 
-import navigationService from 'managers/navigationService.js';
+import navigationManager from 'managers/navigationManager.js';
 import Navigator from 'containers/Navigator.js';
 import styles from 'styles/App.style.js';
 
@@ -24,7 +24,7 @@ class App extends Component<TAppProps> {
                     <View style={styles.appContainer}>
                         <Navigator
                             ref={(navigatorRef: NavigationContainer) => {
-                                navigationService.setTopLevelNavigator(
+                                navigationManager.setTopLevelNavigator(
                                     navigatorRef,
                                 );
                             }}

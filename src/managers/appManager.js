@@ -3,10 +3,12 @@
 // @flow
 
 import AppStore from 'stores/appStore.js';
-import navigationService from 'managers/navigationService.js';
+import navigationManager from 'managers/navigationManager.js';
 import User from 'stores/models/User.js';
 
-class StoreManager {
+import type { TUserProps } from 'config/types.js';
+
+class AppManager {
     store: AppStore;
 
     constructor() {
@@ -19,15 +21,20 @@ class StoreManager {
                 this.store.setUser(user);
 
                 if (user == null) {
-                    navigationService.replace('Login');
+                    navigationManager.replace('Login');
                 } else {
-                    navigationService.replace('Projects');
+                    navigationManager.replace('Projects');
                 }
             })
             .catch(e => {
-                navigationService.replace('Login');
+                navigationManager.replace('Login');
             });
+    }
+
+    createUser(props: TUserProps) {
+        this.store.setUser(new User(props), true);
+        navigationManager.replace('Projects');
     }
 }
 
-export default new StoreManager();
+export default new AppManager();

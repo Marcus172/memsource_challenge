@@ -15,8 +15,9 @@ class AppStore {
         this.user = null;
     }
 
-    @action setUser(user: User | null) {
+    @action setUser(user: User, save?: boolean) {
         this.user = user;
+        save && this.user.saveToStorage();
     }
 }
 

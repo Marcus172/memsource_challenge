@@ -6,15 +6,7 @@ import { observable } from 'mobx';
 import AsyncStorage from '@react-native-community/async-storage';
 import constants from 'config/constants.js';
 
-type TUserProps = {|
-    firstName: string,
-    surname: string,
-    username: string,
-    email: string,
-    role: string,
-    id: string,
-    token: string,
-|};
+import type { TUserProps } from 'config/types.js';
 
 const { storage_key_user } = constants;
 
@@ -35,43 +27,48 @@ class User {
     }
 
     @observable firstName: string;
-    @observable surname: string;
-    @observable username: string;
+    @observable lastName: string;
+    @observable userName: string;
     @observable email: string;
     @observable role: string;
     @observable id: string;
+    @observable uuid: string;
     @observable token: string;
+    @observable tokenExpiresIn: string;
 
     constructor(props: TUserProps) {
         this.firstName = props.firstName;
-        this.surname = props.surname;
-        this.username = props.username;
+        this.lastName = props.lastName;
+        this.userName = props.userName;
         this.email = props.email;
         this.role = props.role;
         this.id = props.id;
+        this.uuid = props.uuid;
         this.token = props.token; // Token should be stored in some encrypted storage.
+        this.tokenExpiresIn = props.tokenExpiresIn;
     }
 
-    saveToStorage = async (): Promise<boolean> => {
-        try {
-            await AsyncStorage.setItem(
-                storage_key_user,
-                JSON.stringify({
-                    firstName: this.firstName,
-                    surname: this.surname,
-                    username: this.username,
-                    email: this.email,
-                    role: this.role,
-                    id: this.id,
-                    token: this.token,
-                }),
-            );
-
-            return true;
-        } catch (e) {
-            console.error('could not save user to local storage', e);
-            return false;
-        }
+    saveToStorage = () => {
+        AsyncStorage.setItem(
+            storage_key_user,
+            JSON.stringify({
+                firstName: this.firstName,
+                lastName: this.lastName,
+                userName: this.userName,
+                email: this.email,
+                role: this.role,
+                id: this.id,
+                uuid: this.uuid,
+                token: this.token,
+                tokenExpiresIn: this.tokenExpiresIn,
+            }),
+        )
+            .then(() => {
+                console.debug('user saved to local storage');
+            })
+            .catch(e => {
+                console.error('could not save user to local storage', e);
+            });
     };
 }
 

@@ -9,13 +9,17 @@ import {
     Text,
     TextInput,
     TouchableWithoutFeedback,
-    TouchableOpacity,
     View,
 } from 'react-native';
 import React, { PureComponent } from 'react';
 
+import apiManager from 'managers/apiManager.js';
+import appManager from 'managers/appManager.js';
 import appConfig from 'config/appConfig.js';
 import styles from 'styles/LoginScreen.style.js';
+
+import type { TLoginResponse } from 'config/types.js';
+import Button from 'components/Button.js';
 
 type TProps = {};
 type TState = {
@@ -38,7 +42,27 @@ class LoginScreen extends PureComponent<TProps, TState> {
     }
 
     submit = () => {
-        this.setState({ error: 'error' });
+        this.setState({ loading: true, error: null }, () => {
+            apiManager
+                .login(this.state.username, this.state.password)
+                .then((response: TLoginResponse) => {
+                    if (response.error != null) {
+                        this.setState({
+                            error: response.error.message,
+                            loading: false,
+                        });
+                    } else {
+                        appManager.createUser({
+                            ...response.data.user,
+                            token: response.data.token,
+                            tokenExpiresIn: response.data.expires,
+                        });
+                    }
+                })
+                .catch(e => {
+                    this.setState({ error: 'Unknown error', loading: false });
+                });
+        });
     };
 
     isLoginButtonEnabled = () => {
@@ -56,7 +80,9 @@ class LoginScreen extends PureComponent<TProps, TState> {
 
         return (
             <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{this.state.error}</Text>
+                <Text style={styles.errorText}>
+                    {this.state.error}. Please try again.
+                </Text>
             </View>
         );
     };
@@ -86,6 +112,7 @@ class LoginScreen extends PureComponent<TProps, TState> {
                                     this.setState({ username })
                                 }
                                 value={this.state.username}
+                                autoCapitalize="none"
                             />
                             <TextInput
                                 placeholder="Password"
@@ -98,23 +125,12 @@ class LoginScreen extends PureComponent<TProps, TState> {
                                 value={this.state.password}
                             />
                             {this.renderError()}
-                            <TouchableOpacity
-                                style={
-                                    this.isLoginButtonEnabled()
-                                        ? styles.loginButton
-                                        : styles.loginButtonDisabled
-                                }
-                                onPress={
-                                    this.isLoginButtonEnabled()
-                                        ? this.submit
-                                        : null
-                                }
-                                activeOpacity={
-                                    this.isLoginButtonEnabled() ? 0.2 : 1
-                                }
-                            >
-                                <Text style={styles.buttonText}>Login</Text>
-                            </TouchableOpacity>
+                            <Button
+                                label="Login"
+                                onPress={this.submit}
+                                disabled={!this.isLoginButtonEnabled()}
+                                loading={this.state.loading}
+                            />
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
