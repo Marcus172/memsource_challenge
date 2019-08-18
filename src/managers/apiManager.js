@@ -5,8 +5,14 @@
 import axios from 'axios';
 
 import appConfig from 'config/appConfig.js';
+import appManager from 'managers/appManager.js';
 
-import type { TError, TLoginResponse } from 'config/types.js';
+import type {
+    TError,
+    TListProjectsResponse,
+    TLoginResponse,
+    TResponseError,
+} from 'config/types.js';
 
 class ApiManager {
     static makeRequest(
@@ -14,7 +20,12 @@ class ApiManager {
         request: string,
         params?: Object,
     ): Promise<Object | null> {
-        const requestUrl = `${appConfig.webApiUrl}/${request}`;
+        let requestUrl = `${appConfig.webApiUrl}/${request}`;
+        const token = appManager.getUserToken();
+
+        if (token != null) {
+            requestUrl += `?token=${token}`;
+        }
 
         console.debug(
             `ApiManager: Making ${type.toUpperCase()} request to url: ${requestUrl} with params: `,
@@ -42,6 +53,34 @@ class ApiManager {
         return ApiManager.makeRequest('post', request, params);
     }
 
+    static processError(error: TError): TResponseError {
+        console.warn('ApiManager: Login failed', error);
+        const status = error.response.status;
+        let message = '';
+
+        switch (status) {
+            case 401:
+                message = 'Bad credentials';
+                break;
+            case 403:
+                message = 'Login rejected by server';
+                break;
+            case 408:
+                message = 'Server is not responding';
+                break;
+            case 500:
+                message = 'Server seems to have trouble';
+                break;
+            default:
+                message = 'Unknown error';
+        }
+
+        return {
+            status,
+            message,
+        };
+    }
+
     login(username: string, password: string): Promise<TLoginResponse> {
         return ApiManager.makePOSTRequest('api2/v1/auth/login', {
             userName: username,
@@ -53,10 +92,8 @@ class ApiManager {
 
                     if (response == null) {
                         return {
-                            error: {
-                                status: null,
-                                message: 'Unknown error',
-                            },
+                            status: null,
+                            message: 'Unknown error',
                         };
                     }
 
@@ -64,39 +101,41 @@ class ApiManager {
                 },
             )
             .catch(
-                (e: TError): TLoginResponse => {
-                    console.warn('ApiManager: Login failed', e);
-                    const status = e.response.status;
-                    let message = '';
-
-                    switch (status) {
-                        case 401:
-                            message = 'Bad credentials';
-                            break;
-                        case 403:
-                            message = 'Login rejected by server';
-                            break;
-                        case 408:
-                            message = 'Server is not responding';
-                            break;
-                        case 500:
-                            message = 'Server seems to have trouble';
-                            break;
-                        default:
-                            message = 'Unknown error';
-                    }
-
-                    return {
-                        error: {
-                            status,
-                            message,
-                        },
-                    };
+                (e: TError): TResponseError => {
+                    return ApiManager.processError(e);
                 },
             );
     }
 
     logout() {}
+
+    fetchProjects(): Promise<TListProjectsResponse> {
+        return ApiManager.makeGETRequest('api2/v1/projects')
+            .then(
+                (
+                    response: TListProjectsResponse | null,
+                ): TListProjectsResponse => {
+                    console.debug(
+                        'ApiManager: fetchProjects responded with',
+                        response,
+                    );
+
+                    if (response == null) {
+                        return {
+                            status: null,
+                            message: 'Unknown error',
+                        };
+                    }
+
+                    return response;
+                },
+            )
+            .catch(
+                (e: TError): TResponseError => {
+                    return ApiManager.processError(e);
+                },
+            );
+    }
 }
 
 export default new ApiManager();

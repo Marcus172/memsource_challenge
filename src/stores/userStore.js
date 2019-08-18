@@ -3,15 +3,13 @@
 // @flow
 
 import { action, observable } from 'mobx';
-import ProjectsStore from 'stores/projectsStore.js';
+
 import User from 'stores/models/User.js';
 
-class AppStore {
-    @observable projectStore: ProjectsStore;
+class UserStore {
     @observable user: User | null;
 
     constructor() {
-        this.projectStore = new ProjectsStore();
         this.user = null;
     }
 
@@ -21,4 +19,4 @@ class AppStore {
     }
 }
 
-export default AppStore;
+export default UserStore;

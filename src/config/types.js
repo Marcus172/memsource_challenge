@@ -20,12 +20,43 @@ type TError = {
         status: number,
         data: Object,
     },
-    message: string,
 };
 
-type TLoginResponse = {
-    error?: { status: number | null, message: string } | null,
-    user?: {
+type TResponseError = { status: number | null, message: string } | null;
+
+type TLoginResponse =
+    | {
+          data: {
+              user: {
+                  firstName: string,
+                  lastName: string,
+                  userName: string,
+                  email: string,
+                  role: string,
+                  id: string,
+                  uid: string,
+              },
+              token: string,
+              expires: string,
+          },
+      }
+    | TResponseError;
+
+type TProjectData = {
+    uid: string,
+    internalId: number,
+    id: string,
+    name: string,
+    dateCreated: string,
+    domain: {
+        name: string,
+        id: string,
+    },
+    subDomain: {
+        name: string,
+        id: string,
+    },
+    owner: {
         firstName: string,
         lastName: string,
         userName: string,
@@ -34,9 +65,31 @@ type TLoginResponse = {
         id: string,
         uid: string,
     },
-    token?: string,
-    expires?: string,
+    sourceLang: string,
+    targetLangs: Array<string>,
+    references: [
+        {
+            id: string,
+            filename: string,
+            note: string,
+        },
+    ],
+    userRole: string,
+    status: TStatus,
 };
+
+type TListProjectsResponse =
+    | {
+          data: {
+              totalElements: number,
+              totalPages: number,
+              pageSize: number,
+              pageNumber: number,
+              numberOfElements: number,
+              content: Array<TProjectData>,
+          },
+      }
+    | TResponseError;
 
 type TUserProps = {|
     firstName: string,
@@ -50,4 +103,20 @@ type TUserProps = {|
     tokenExpiresIn: string,
 |};
 
-export type { TError, TLoginResponse, TStatus, TUserProps };
+type TProjectProps = {|
+    name: string,
+    sourceLang: string,
+    targetLangs: Array<string>,
+    status: TStatus,
+|};
+
+export type {
+    TError,
+    TLoginResponse,
+    TStatus,
+    TUserProps,
+    TResponseError,
+    TListProjectsResponse,
+    TProjectData,
+    TProjectProps,
+};

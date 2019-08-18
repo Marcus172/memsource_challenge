@@ -4,14 +4,17 @@
 
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import ProjectsScreen from 'components/ProjectsScreen.js';
 import LoginScreen from 'components/LoginScreen.js';
+import ProjectsScreenContainer from 'containers/ProjectsScrenContainer.js';
 import SplashScreen from 'components/SplashScreen.js';
 
 const AppNavigator = createStackNavigator(
     {
         Projects: {
-            screen: ProjectsScreen,
+            screen: ProjectsScreenContainer,
+            navigationOptions: {
+                title: 'Projects',
+            },
         },
         Login: {
             screen: LoginScreen,

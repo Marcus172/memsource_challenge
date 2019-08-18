@@ -16,10 +16,10 @@ import React, { PureComponent } from 'react';
 import apiManager from 'managers/apiManager.js';
 import appManager from 'managers/appManager.js';
 import appConfig from 'config/appConfig.js';
+import Button from 'components/Button.js';
 import styles from 'styles/LoginScreen.style.js';
 
 import type { TLoginResponse } from 'config/types.js';
-import Button from 'components/Button.js';
 
 type TProps = {};
 type TState = {
@@ -46,20 +46,24 @@ class LoginScreen extends PureComponent<TProps, TState> {
             apiManager
                 .login(this.state.username, this.state.password)
                 .then((response: TLoginResponse) => {
-                    if (response.error != null) {
-                        this.setState({
-                            error: response.error.message,
-                            loading: false,
-                        });
-                    } else {
-                        appManager.createUser({
+                    if (response != null && response.data != null) {
+                        appManager.userLogged({
                             ...response.data.user,
                             token: response.data.token,
                             tokenExpiresIn: response.data.expires,
                         });
+                    } else {
+                        this.setState({
+                            error: response.message,
+                            loading: false,
+                        });
                     }
                 })
-                .catch(e => {
+                .catch((e: Error) => {
+                    console.warn(
+                        'Unexpected Error occurred during login promise',
+                        e,
+                    );
                     this.setState({ error: 'Unknown error', loading: false });
                 });
         });

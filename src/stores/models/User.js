@@ -21,7 +21,7 @@ class User {
 
             return null;
         } catch (e) {
-            console.error('could not load user from local storage', e);
+            console.error('Could not load user from local storage', e);
             return null;
         }
     }
@@ -64,10 +64,10 @@ class User {
             }),
         )
             .then(() => {
-                console.debug('user saved to local storage');
+                console.debug('User saved to local storage');
             })
             .catch(e => {
-                console.error('could not save user to local storage', e);
+                console.error('Could not save user to local storage', e);
             });
     };
 }

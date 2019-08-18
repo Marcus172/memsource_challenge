@@ -4,24 +4,17 @@
 
 import { observable } from 'mobx';
 
-import type { TStatus } from 'config/types.js';
-
-type TProjectProps = {|
-    name: string,
-    sourceLangs: Array<string>,
-    targetLangs: Array<string>,
-    status: TStatus,
-|};
+import type { TProjectProps, TStatus } from 'config/types.js';
 
 class Project {
     @observable name: string;
-    @observable sourceLangs: Array<string>;
+    @observable sourceLang: string;
     @observable targetLangs: Array<string>;
     @observable status: TStatus;
 
     constructor(props: TProjectProps) {
         this.name = props.name;
-        this.sourceLangs = props.sourceLangs;
+        this.sourceLang = props.sourceLang;
         this.targetLangs = props.targetLangs;
         this.status = props.status;
     }
