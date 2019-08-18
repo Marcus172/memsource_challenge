@@ -2,8 +2,8 @@
 
 // @flow
 
-import { SafeAreaView, StatusBar, View } from 'react-native';
 import { observer } from 'mobx-react';
+import { SafeAreaView, StatusBar, View } from 'react-native';
 import React, { Component, Fragment } from 'react';
 
 import navigationManager from 'managers/navigationManager.js';

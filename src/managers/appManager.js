@@ -32,9 +32,9 @@ class AppManager {
                 if (user == null) {
                     navigationManager.replace('Login');
                 } else {
+                    navigationManager.replace('Projects');
                     this.userStore.setUser(user);
                     this.loadProjects();
-                    navigationManager.replace('Projects');
                 }
             })
             .catch(e => {

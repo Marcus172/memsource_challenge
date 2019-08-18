@@ -6,7 +6,10 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
-        marginTop: 20,
-        height: '100%',
+        padding: 20,
+    },
+    logo: {
+        marginTop: 150,
+        width: '100%',
     },
 });

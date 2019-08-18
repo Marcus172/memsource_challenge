@@ -2,8 +2,6 @@
 
 // @flow
 
-import { observable } from 'mobx';
-
 type TStatus =
     | 'NEW'
     | 'ASSIGNED'

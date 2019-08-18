@@ -2,11 +2,15 @@
 
 // @flow
 
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
+import React from 'react';
 
 import LoginScreen from 'components/LoginScreen.js';
+import HeaderSettingsButton from 'components/HeaderSettingsButton.js';
 import ProjectsScreenContainer from 'containers/ProjectsScrenContainer.js';
 import SplashScreen from 'components/SplashScreen.js';
+import SettingsScreen from 'components/SettingsScreen.js';
+import DetailScreen from 'components/DetailScreen.js';
 
 const AppNavigator = createStackNavigator(
     {
@@ -14,6 +18,7 @@ const AppNavigator = createStackNavigator(
             screen: ProjectsScreenContainer,
             navigationOptions: {
                 title: 'Projects',
+                headerRight: <HeaderSettingsButton />,
             },
         },
         Login: {
@@ -28,10 +33,26 @@ const AppNavigator = createStackNavigator(
                 header: null,
             },
         },
+        Detail: {
+            screen: DetailScreen,
+        },
     },
     {
         initialRouteName: 'Splash',
     },
 );
 
-export default createAppContainer(AppNavigator);
+const RootStack = createStackNavigator(
+    {
+        App: AppNavigator,
+        Settings: {
+            screen: SettingsScreen,
+        },
+    },
+    {
+        mode: 'modal',
+        headerMode: 'none',
+    },
+);
+
+export default createAppContainer(RootStack);
