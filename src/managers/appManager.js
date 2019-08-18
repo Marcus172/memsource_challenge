@@ -90,6 +90,10 @@ class AppManager {
     getUserToken(): ?string {
         return idx(this.userStore, _ => _.user.token);
     }
+
+    getUser(): User | null {
+        return this.userStore.user;
+    }
 }
 
 export default new AppManager();

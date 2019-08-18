@@ -2,8 +2,8 @@
 
 // @flow
 
+import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { FlatList, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import React, { PureComponent } from 'react';
 
@@ -62,6 +62,7 @@ class ProjectsScreen extends PureComponent<TProps> {
                     keyExtractor={this.keyExtractor}
                     contentContainerStyle={styles.container}
                     ListHeaderComponent={this.renderHeader}
+                    ListEmptyComponent={<ActivityIndicator />}
                 />
             </DataTable>
         );
