@@ -2,6 +2,7 @@
 
 // @flow
 
+import { observable } from 'mobx';
 import idx from 'idx';
 
 import apiManager from 'managers/apiManager.js';
@@ -13,32 +14,38 @@ import User from 'stores/models/User.js';
 import type {
     TListProjectsResponse,
     TProjectData,
+    TResponseError,
     TUserProps,
 } from 'config/types.js';
 import Project from 'stores/models/Project.js';
 
 class AppManager {
+    @observable appInitialized: boolean;
     userStore: UserStore;
     projectsStore: ProjectsStore;
 
     constructor() {
         this.userStore = new UserStore();
         this.projectsStore = new ProjectsStore();
+        this.appInitialized = false;
+    }
+
+    getAppInitializedObservable(): boolean {
+        return this.appInitialized;
     }
 
     init() {
         User.loadFromStorage()
             .then((user: User | null) => {
-                if (user == null) {
-                    navigationManager.replace('Login');
-                } else {
-                    navigationManager.replace('Projects');
+                if (user != null) {
                     this.userStore.setUser(user);
                     this.loadProjects();
                 }
+
+                this.appInitialized = true;
             })
             .catch(e => {
-                navigationManager.replace('Login');
+                this.appInitialized = true;
             });
     }
 
@@ -93,6 +100,21 @@ class AppManager {
 
     getUser(): User | null {
         return this.userStore.user;
+    }
+
+    logout() {
+        apiManager
+            .logout(this.userStore.user.token)
+            .then(response => {
+                navigationManager.reset();
+                this.userStore.deleteUser();
+            })
+            .catch((e: TResponseError) => {
+                console.warn(
+                    'AppManager: something went wrong during logout promise',
+                    e,
+                );
+            });
     }
 }
 

@@ -2,7 +2,7 @@
 
 // @flow
 
-import { StackActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import type { NavigationContainer, NavigationParams } from 'react-navigation';
 
@@ -30,8 +30,19 @@ function replace(routeName: string, params: NavigationParams) {
     );
 }
 
+function reset() {
+    const resetAction = StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [NavigationActions.navigate({ routeName: 'App' })],
+    });
+
+    _navigator.dispatch(resetAction);
+}
+
 export default {
     navigate,
     replace,
     setTopLevelNavigator,
+    reset,
 };

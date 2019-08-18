@@ -107,7 +107,15 @@ class ApiManager {
             );
     }
 
-    logout() {}
+    logout(token: string) {
+        return ApiManager.makePOSTRequest('api2/v1/auth/logout', { token })
+            .then(response => {
+                console.debug('ApiManager: Logout responded with', response);
+            })
+            .catch((e: TError) => {
+                return ApiManager.processError(e);
+            });
+    }
 
     fetchProjects(): Promise<TListProjectsResponse> {
         return ApiManager.makeGETRequest('api2/v1/projects')

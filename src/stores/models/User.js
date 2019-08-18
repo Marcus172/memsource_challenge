@@ -26,6 +26,10 @@ class User {
         }
     }
 
+    static flushStorage() {
+        AsyncStorage.removeItem(storage_key_user);
+    }
+
     @observable firstName: string;
     @observable lastName: string;
     @observable userName: string;

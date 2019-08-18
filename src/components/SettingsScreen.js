@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import React, { PureComponent } from 'react';
 
+import appManager from 'managers/appManager.js';
 import Button from 'components/Button.js';
 import styles from 'styles/SettingsScreen.style.js';
 import User from 'stores/models/User.js';
@@ -33,7 +34,10 @@ class SettingsScreen extends PureComponent<TProps> {
                             Last Name: {this.props.user.lastName}
                         </Paragraph>
                         <Paragraph>Email: {this.props.user.email}</Paragraph>
-                        <Button label="Logout" onPress={null} />
+                        <Button
+                            label="Logout"
+                            onPress={() => appManager.logout()}
+                        />
                     </Card.Content>
                 </Card>
                 <Button

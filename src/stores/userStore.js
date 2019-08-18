@@ -17,6 +17,11 @@ class UserStore {
         this.user = user;
         save && this.user.saveToStorage();
     }
+
+    @action deleteUser() {
+        this.user = null;
+        User.flushStorage();
+    }
 }
 
 export default UserStore;

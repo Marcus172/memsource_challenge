@@ -3,13 +3,35 @@
 // @flow
 
 import { ActivityIndicator, Image, View } from 'react-native';
+import { observer } from 'mobx-react';
+import { withNavigation } from 'react-navigation';
 import React, { PureComponent } from 'react';
 
 import styles from 'styles/SplashScreen.style.js';
 
-type TProps = {};
+import type { NavigationScreenProp, NavigationState } from 'react-navigation';
 
+type TProps = {
+    appInitialized: boolean,
+    navigation: NavigationScreenProp<NavigationState>,
+};
+
+@observer
 class SplashScreen extends PureComponent<TProps> {
+    componentDidMount() {
+        this.checkInitialized();
+    }
+
+    componentDidUpdate() {
+        this.checkInitialized();
+    }
+
+    checkInitialized = () => {
+        if (this.props.appInitialized) {
+            this.props.navigation.replace('Login');
+        }
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -24,4 +46,4 @@ class SplashScreen extends PureComponent<TProps> {
     }
 }
 
-export default SplashScreen;
+export default withNavigation(SplashScreen);
