@@ -93,49 +93,44 @@ class LoginScreen extends PureComponent<TProps, TState> {
 
     render() {
         return (
-            <KeyboardAvoidingView
-                style={styles.containerView}
-                behavior="padding"
-            >
+            <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.loginScreenContainer}>
-                        <View style={styles.loginFormView}>
-                            <Image
-                                style={styles.logo}
-                                source={require('assets/logo.png')}
-                                resizeMode="contain"
-                            />
-                            <Text style={styles.logoText}>
-                                {appConfig.displayName}
-                            </Text>
-                            <TextInput
-                                placeholder="Username"
-                                placeholderColor="#c4c3cb"
-                                style={styles.loginFormTextInput}
-                                onChangeText={username =>
-                                    this.setState({ username })
-                                }
-                                value={this.state.username}
-                                autoCapitalize="none"
-                            />
-                            <TextInput
-                                placeholder="Password"
-                                placeholderColor="#c4c3cb"
-                                style={styles.loginFormTextInput}
-                                secureTextEntry={true}
-                                onChangeText={password =>
-                                    this.setState({ password })
-                                }
-                                value={this.state.password}
-                            />
-                            {this.renderError()}
-                            <Button
-                                label="Login"
-                                onPress={this.submit}
-                                disabled={!this.isLoginButtonEnabled()}
-                                loading={this.state.loading}
-                            />
-                        </View>
+                        <Image
+                            style={styles.logo}
+                            source={require('assets/logo.png')}
+                            resizeMode="contain"
+                        />
+                        <Text style={styles.logoText}>
+                            {appConfig.displayName}
+                        </Text>
+                        <TextInput
+                            placeholder="Username"
+                            placeholderColor="#c4c3cb"
+                            style={styles.loginFormTextInput}
+                            onChangeText={username =>
+                                this.setState({ username })
+                            }
+                            value={this.state.username}
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            placeholder="Password"
+                            placeholderColor="#c4c3cb"
+                            style={styles.loginFormTextInput}
+                            secureTextEntry={true}
+                            onChangeText={password =>
+                                this.setState({ password })
+                            }
+                            value={this.state.password}
+                        />
+                        {this.renderError()}
+                        <Button
+                            label="Login"
+                            onPress={this.submit}
+                            disabled={!this.isLoginButtonEnabled()}
+                            loading={this.state.loading}
+                        />
                     </View>
                 </TouchableWithoutFeedback>
             </KeyboardAvoidingView>

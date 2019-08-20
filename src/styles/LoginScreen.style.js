@@ -7,11 +7,7 @@ import { StyleSheet } from 'react-native';
 import colors from 'styles/colors.js';
 
 export default StyleSheet.create({
-    containerView: {
-        flex: 1,
-    },
     loginScreenContainer: {
-        flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
     },
@@ -25,9 +21,6 @@ export default StyleSheet.create({
         marginBottom: 30,
         textAlign: 'center',
         color: colors.dark,
-    },
-    loginFormView: {
-        flex: 1,
     },
     loginFormTextInput: {
         height: 43,
