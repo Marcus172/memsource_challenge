@@ -2,7 +2,7 @@
 
 // @flow
 
-import { action, computed, observable } from 'mobx';
+import { action, observable } from 'mobx';
 
 import Project from 'stores/models/Project.js';
 

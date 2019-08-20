@@ -12,4 +12,19 @@ export default StyleSheet.create({
     flatlist: {
         height: '100%',
     },
+    filterSlider: {
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 20,
+    },
+    table: {
+        marginTop: 10,
+    },
+    filterContainer: {
+        marginTop: 20,
+    },
+    filterHeadline: {
+        alignSelf: 'center',
+        marginTop: 20,
+    },
 });

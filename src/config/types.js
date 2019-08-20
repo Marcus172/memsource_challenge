@@ -111,6 +111,17 @@ type TProjectProps = {|
     dateDue: string,
 |};
 
+type TFilterItem = {|
+    projectId: string,
+    dueInHours: number,
+|};
+
+type TPickerItem = {|
+    label: string,
+    key: string,
+    value: number,
+|};
+
 export type {
     TError,
     TLoginResponse,
@@ -120,4 +131,6 @@ export type {
     TListProjectsResponse,
     TProjectData,
     TProjectProps,
+    TPickerItem,
+    TFilterItem,
 };

@@ -20,6 +20,7 @@ class Project {
     @observable dateDue: string;
 
     constructor(props: TProjectProps) {
+        this.id = props.id;
         this.name = props.name;
         this.sourceLang = props.sourceLang;
         this.targetLangs = props.targetLangs;
@@ -27,7 +28,11 @@ class Project {
         this.dateDue = props.dateDue;
     }
 
-    @computed get dueInHours(): number {
+    @computed get dueInHours(): number | null {
+        if (this.dateDue == null) {
+            return null;
+        }
+
         const now = moment().valueOf();
         const dueDateMillis = moment(this.dateDue).valueOf();
 
