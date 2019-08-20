@@ -52,6 +52,8 @@ class ProjectsStore {
     generateFilter = () => {
         if (this.projects == null) {
             this.filterItems = [];
+
+            return;
         }
 
         const values = this.projects.map((project: Project, index: number) => {

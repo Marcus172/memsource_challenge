@@ -54,7 +54,9 @@ class AppManager {
     userLogged(props: TUserProps) {
         this.userStore.setUser(new User(props), true);
         navigationManager.replace('Projects');
-        this.loadProjects();
+        this.loadProjects(() => {
+            this.projectsStore.generateFilter();
+        });
     }
 
     getProjects(): Array<Project> {
