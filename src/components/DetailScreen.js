@@ -42,9 +42,11 @@ class DetailScreen extends PureComponent<TProps> {
                         <Paragraph>{`Target Languages: ${project.targetLangs.join(
                             ', ',
                         )}`}</Paragraph>
-                        <Paragraph>{`Due in ${
-                            project.dueInHours
-                        } hours`}</Paragraph>
+                        <Paragraph>
+                            {project.dueInHours == null
+                                ? 'Due date is not set'
+                                : `Due in ${project.dueInHours} hours`}
+                        </Paragraph>
                     </Card.Content>
                 </Card>
             </View>

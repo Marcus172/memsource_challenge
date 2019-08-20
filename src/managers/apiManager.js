@@ -32,11 +32,15 @@ class ApiManager {
             params,
         );
 
-        return axios({
-            method: type,
-            url: requestUrl,
-            params,
-        });
+        switch (type) {
+            case 'post':
+                return axios.post(requestUrl, params);
+            case 'get':
+                return axios.get(requestUrl, { params });
+            default:
+                console.error('ApiManager: Unsupported request type');
+                return Promise.reject('ApiManager: Unsupported request type');
+        }
     }
 
     static makeGETRequest(

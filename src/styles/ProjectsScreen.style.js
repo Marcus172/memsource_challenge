@@ -4,6 +4,8 @@
 
 import { StyleSheet } from 'react-native';
 
+import colors from 'styles/colors.js';
+
 export default StyleSheet.create({
     container: {
         marginTop: 20,
@@ -19,6 +21,9 @@ export default StyleSheet.create({
     },
     table: {
         marginTop: 10,
+    },
+    tableHeader: {
+        backgroundColor: colors.white,
     },
     filterContainer: {
         marginTop: 20,

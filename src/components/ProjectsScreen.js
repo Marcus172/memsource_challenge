@@ -103,7 +103,7 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
 
     renderHeader = () => {
         return (
-            <DataTable.Header>
+            <DataTable.Header style={styles.tableHeader}>
                 <DataTable.Title>Name</DataTable.Title>
                 <DataTable.Title>Source Lang</DataTable.Title>
                 <DataTable.Title>Target Lang</DataTable.Title>
@@ -213,6 +213,7 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
                         onEndReached={this.loadMoreProjects}
                         onEndReachedThreshold={1}
                         contentContainerStyle={styles.flatlist}
+                        stickyHeaderIndices={[0]}
                     />
                 </DataTable>
             </View>
