@@ -2,11 +2,17 @@
 
 // @flow
 
-import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import { DataTable } from 'react-native-paper';
+import {
+    ActivityIndicator,
+    FlatList,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { DataTable, Divider } from 'react-native-paper';
 import { withNavigation } from 'react-navigation';
 import React, { PureComponent } from 'react';
 
+import appManager from 'managers/appManager.js';
 import Project from 'stores/models/Project.js';
 import styles from 'styles/ProjectsScreen.style.js';
 
@@ -17,7 +23,7 @@ type TProps = {
     navigation: NavigationScreenProp<NavigationState>,
 };
 
-class ProjectsScreen extends PureComponent<TProps> {
+class ProjectsScreen extends PureComponent<TProps, TState> {
     keyExtractor = (item: Project, index: number) =>
         `project_${item.name}_${index}`;
 
@@ -25,6 +31,10 @@ class ProjectsScreen extends PureComponent<TProps> {
         return () => {
             this.props.navigation.navigate('Detail', { project });
         };
+    };
+
+    loadMoreProjects = () => {
+        appManager.loadMoreProjects();
     };
 
     renderHeader = () => {
@@ -55,16 +65,21 @@ class ProjectsScreen extends PureComponent<TProps> {
 
     render() {
         return (
-            <DataTable>
-                <FlatList
-                    data={this.props.projects}
-                    renderItem={this.renderProject}
-                    keyExtractor={this.keyExtractor}
-                    contentContainerStyle={styles.container}
-                    ListHeaderComponent={this.renderHeader}
-                    ListEmptyComponent={<ActivityIndicator />}
-                />
-            </DataTable>
+            <View styles={styles.container}>
+                <Divider />
+                <DataTable style={styles.table}>
+                    <FlatList
+                        data={this.props.projects}
+                        renderItem={this.renderProject}
+                        keyExtractor={this.keyExtractor}
+                        ListHeaderComponent={this.renderHeader}
+                        ListEmptyComponent={<ActivityIndicator />}
+                        onEndReached={this.loadMoreProjects}
+                        onEndReachedThreshold={1}
+                        contentContainerStyle={styles.flatlist}
+                    />
+                </DataTable>
+            </View>
         );
     }
 }

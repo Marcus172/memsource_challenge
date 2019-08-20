@@ -11,3 +11,9 @@ import AppManager from 'managers/appManager.js';
 AppRegistry.registerComponent(appConfig.appName, () => App);
 
 AppManager.init();
+
+if (__DEV__) {
+    global.XMLHttpRequest = global.originalXMLHttpRequest
+        ? global.originalXMLHttpRequest
+        : global.XMLHttpRequest;
+}

@@ -14,7 +14,6 @@ import User from 'stores/models/User.js';
 import type {
     TListProjectsResponse,
     TProjectData,
-    TResponseError,
     TUserProps,
 } from 'config/types.js';
 import Project from 'stores/models/Project.js';
@@ -59,6 +58,13 @@ class AppManager {
         return this.projectsStore.getProjects();
     }
 
+    hasNextProjectPage(): boolean {
+        const pageNumber = this.projectsStore.getPageNumber() || 0;
+        const totalPages = this.projectsStore.getTotalPages() || 1;
+
+        return pageNumber !== totalPages - 1;
+    }
+
     loadProjects() {
         apiManager
             .fetchProjects()
@@ -66,6 +72,8 @@ class AppManager {
                 if (response != null && response.data != null) {
                     this.projectsStore.setProjects(
                         this.createProjectsFromResponse(response),
+                        response.data.totalPages,
+                        response.data.pageNumber,
                     );
                 }
             })
@@ -77,6 +85,40 @@ class AppManager {
             });
     }
 
+    /**
+     * Returns false if failed
+     */
+    loadMoreProjects(): boolean {
+        const dueInHours = this.projectsStore.getFilterDueInHours();
+        const pageNumber = this.projectsStore.getPageNumber() || 0;
+
+        if (!this.hasNextProjectPage()) {
+            console.debug(
+                'AppManager: Cannot load more projects. You already are on last page',
+            );
+
+            return false;
+        }
+
+        apiManager
+            .fetchProjects(dueInHours, pageNumber + 1)
+            .then((response: TListProjectsResponse) => {
+                if (response != null && response.data != null) {
+                    this.projectsStore.addProjects(
+                        this.createProjectsFromResponse(response),
+                    );
+                }
+            })
+            .catch((e: Error) => {
+                console.warn(
+                    'Unexpected Error occurred during loadProjects promise',
+                    e,
+                );
+            });
+
+        return true;
+    }
+
     createProjectsFromResponse(
         response: TListProjectsResponse,
     ): Array<Project> {
@@ -86,10 +128,12 @@ class AppManager {
 
         return response.data.content.map((item: TProjectData) => {
             return new Project({
+                id: item.id,
                 name: item.name,
                 sourceLang: item.sourceLang,
                 status: item.status,
                 targetLangs: item.targetLangs,
+                dateDue: item.dateDue,
             });
         });
     }
@@ -103,7 +147,9 @@ class AppManager {
     }
 
     logout() {
-        apiManager.logout(this.userStore.user.token);
+        const token = this.getUserToken();
+
+        token && apiManager.logout(token);
         this.userStore.deleteUser();
         navigationManager.reset();
     }

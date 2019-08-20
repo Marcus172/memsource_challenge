@@ -4,4 +4,5 @@
 
 export default {
     storage_key_user: '@user_storage',
+    millisToHours: 1000 * 60 * 60,
 };

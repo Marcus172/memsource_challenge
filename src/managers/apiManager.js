@@ -35,7 +35,7 @@ class ApiManager {
         return axios({
             method: type,
             url: requestUrl,
-            data: params,
+            params,
         });
     }
 
@@ -61,6 +61,7 @@ class ApiManager {
         switch (status) {
             case 401:
                 message = 'Bad credentials';
+                // Eventual logout
                 break;
             case 403:
                 message = 'Login rejected by server';
@@ -117,8 +118,14 @@ class ApiManager {
             });
     }
 
-    fetchProjects(): Promise<TListProjectsResponse> {
-        return ApiManager.makeGETRequest('api2/v1/projects')
+    fetchProjects(
+        dueInHours?: ?number,
+        pageNumber?: ?number,
+    ): Promise<TListProjectsResponse> {
+        return ApiManager.makeGETRequest('api2/v1/projects', {
+            dueInHours,
+            pageNumber,
+        })
             .then(
                 (
                     response: TListProjectsResponse | null,

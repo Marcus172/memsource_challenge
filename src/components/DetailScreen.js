@@ -40,7 +40,7 @@ class DetailScreen extends PureComponent<TProps> {
                             project.sourceLang
                         }`}</Paragraph>
                         <Paragraph>{`Target Languages: ${project.targetLangs.join(
-                            ',',
+                            ', ',
                         )}`}</Paragraph>
                     </Card.Content>
                 </Card>

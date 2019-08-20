@@ -46,6 +46,7 @@ type TProjectData = {
     id: string,
     name: string,
     dateCreated: string,
+    dateDue: string,
     domain: {
         name: string,
         id: string,
@@ -102,10 +103,12 @@ type TUserProps = {|
 |};
 
 type TProjectProps = {|
+    id: string,
     name: string,
     sourceLang: string,
     targetLangs: Array<string>,
     status: TStatus,
+    dateDue: string,
 |};
 
 export type {

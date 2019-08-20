@@ -9,4 +9,7 @@ export default StyleSheet.create({
         marginTop: 20,
         height: '100%',
     },
+    flatlist: {
+        height: '100%',
+    },
 });

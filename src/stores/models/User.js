@@ -30,6 +30,8 @@ class User {
         AsyncStorage.removeItem(storage_key_user);
     }
 
+    // These will not change in this application so they would not have to be observable for the case
+    // of current challenge
     @observable firstName: string;
     @observable lastName: string;
     @observable userName: string;
