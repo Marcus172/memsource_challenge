@@ -93,7 +93,10 @@ class LoginScreen extends PureComponent<TProps, TState> {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
+            <KeyboardAvoidingView
+                behavior="position"
+                keyboardVerticalOffset={30}
+            >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.loginScreenContainer}>
                         <Image
