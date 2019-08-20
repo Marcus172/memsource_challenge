@@ -12,6 +12,7 @@ import ProjectsStore from 'stores/projectsStore.js';
 import User from 'stores/models/User.js';
 
 import type {
+    TFilterItem,
     TListProjectsResponse,
     TProjectData,
     TUserProps,
@@ -38,7 +39,9 @@ class AppManager {
             .then((user: User | null) => {
                 if (user != null) {
                     this.userStore.setUser(user);
-                    this.loadProjects();
+                    this.loadProjects(() => {
+                        this.projectsStore.generateFilter();
+                    });
                 }
 
                 this.appInitialized = true;
@@ -65,9 +68,12 @@ class AppManager {
         return pageNumber !== totalPages - 1;
     }
 
-    loadProjects() {
+    loadProjects(callback?: Function) {
+        const dueInHours = this.projectsStore.getFilterDueInHours();
+        const pageNumber = this.projectsStore.getPageNumber();
+
         apiManager
-            .fetchProjects()
+            .fetchProjects(dueInHours, pageNumber)
             .then((response: TListProjectsResponse) => {
                 if (response != null && response.data != null) {
                     this.projectsStore.setProjects(
@@ -75,6 +81,8 @@ class AppManager {
                         response.data.totalPages,
                         response.data.pageNumber,
                     );
+
+                    callback && callback();
                 }
             })
             .catch((e: Error) => {
@@ -85,10 +93,7 @@ class AppManager {
             });
     }
 
-    /**
-     * Returns false if failed
-     */
-    loadMoreProjects(): boolean {
+    loadMoreProjects() {
         const dueInHours = this.projectsStore.getFilterDueInHours();
         const pageNumber = this.projectsStore.getPageNumber() || 0;
 
@@ -97,7 +102,7 @@ class AppManager {
                 'AppManager: Cannot load more projects. You already are on last page',
             );
 
-            return false;
+            return;
         }
 
         apiManager
@@ -115,8 +120,6 @@ class AppManager {
                     e,
                 );
             });
-
-        return true;
     }
 
     createProjectsFromResponse(
@@ -138,8 +141,17 @@ class AppManager {
         });
     }
 
+    submitProjectsFilter(filterValue: TFilterItem) {
+        this.projectsStore.setFilterDueInHours(filterValue.dueInHours);
+        this.loadProjects();
+    }
+
     getUserToken(): ?string {
         return idx(this.userStore, _ => _.user.token);
+    }
+
+    getProjectsFilterItems(): Array<TFilterItem> {
+        return this.projectsStore.getFilterItems();
     }
 
     getUser(): User | null {

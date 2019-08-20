@@ -13,7 +13,12 @@ type TProps = {};
 @observer
 class ProjectsScreenContainer extends PureComponent<TProps> {
     render() {
-        return <ProjectsScreen projects={appManager.getProjects()} />;
+        return (
+            <ProjectsScreen
+                projects={appManager.getProjects()}
+                filterItems={appManager.getProjectsFilterItems()}
+            />
+        );
     }
 }
 

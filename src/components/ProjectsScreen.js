@@ -5,6 +5,7 @@
 import {
     ActivityIndicator,
     FlatList,
+    Platform,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -15,15 +16,16 @@ import React, { PureComponent } from 'react';
 import Slider from '@react-native-community/slider';
 
 import appManager from 'managers/appManager.js';
+import colors from 'styles/colors.js';
 import Project from 'stores/models/Project.js';
 import styles from 'styles/ProjectsScreen.style.js';
 
 import type { NavigationScreenProp, NavigationState } from 'react-navigation';
 import type { TFilterItem, TPickerItem } from 'config/types.js';
-import colors from 'styles/colors.js';
 
 type TProps = {
     projects: Array<Project>,
+    filterItems: Array<TFilterItem>,
     navigation: NavigationScreenProp<NavigationState>,
 };
 
@@ -40,40 +42,11 @@ const filterPickerConfigStyle = {
 };
 
 class ProjectsScreen extends PureComponent<TProps, TState> {
-    static getDerivedStateFromProps(props: TProps, state: TState) {
-        return {
-            filterValue: state.filterValue,
-            filterItems: ProjectsScreen.generateFilterItems(props.projects),
-        };
-    }
-
-    static generateFilterItems = (
-        projects: Array<Project> | null,
-    ): Array<TFilterItem> => {
-        if (projects == null) {
-            return [];
-        }
-
-        const values = projects.map((project: Project, index: number) => {
-            return {
-                projectId: project.id,
-                dueInHours: project.dueInHours,
-            };
-        });
-
-        values.sort(
-            (a: TFilterItem, b: TFilterItem) => a.dueInHours - b.dueInHours,
-        );
-
-        return values.filter((value: TFilterItem) => value.dueInHours != null);
-    };
-
     constructor(props: TProps) {
         super(props);
 
         this.state = {
             filterValue: null,
-            filterItems: [],
         };
     }
 
@@ -87,7 +60,7 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
     };
 
     generatePickerItems = (): Array<TPickerItem> => {
-        return this.state.filterItems.map(
+        return this.props.filterItems.map(
             (item: TFilterItem): TPickerItem => {
                 return {
                     label: `${item.dueInHours} hours`,
@@ -98,8 +71,40 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
         );
     };
 
+    getSliderValue = () => {
+        return (
+            (this.state.filterValue &&
+                this.props.filterItems.findIndex((item: TFilterItem) => {
+                    return item.projectId === this.state.filterValue.projectId;
+                })) ||
+            0
+        );
+    };
+
     loadMoreProjects = () => {
         appManager.loadMoreProjects();
+    };
+
+    submitFilter = () => {
+        this.state.filterValue != null &&
+            appManager.submitProjectsFilter(this.state.filterValue);
+    };
+
+    pickerOnValueChanged = (filterValue: string) => {
+        const filterItem = this.props.filterItems.find(
+            (item: TFilterItem) => item.projectId === filterValue,
+        );
+
+        this.setState(
+            {
+                filterValue: filterItem,
+            },
+            () => {
+                if (Platform.OS === 'android') {
+                    this.submitFilter();
+                }
+            },
+        );
     };
 
     renderHeader = () => {
@@ -113,18 +118,8 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
         );
     };
 
-    getSliderValue = () => {
-        return (
-            (this.state.filterValue &&
-                this.state.filterItems.findIndex((item: TFilterItem) => {
-                    return item.projectId === this.state.filterValue.projectId;
-                })) ||
-            0
-        );
-    };
-
     renderFilter = () => {
-        if (this.state.filterItems.length < 1) {
+        if (this.props.filterItems.length < 1) {
             return <ActivityIndicator />;
         }
 
@@ -132,39 +127,33 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
             <View style={styles.filterContainer}>
                 <Headline style={styles.filterHeadline}>
                     {`Filter due hours from ${
-                        this.state.filterItems[0].dueInHours
+                        this.props.filterItems[0].dueInHours
                     }h to ${
-                        this.state.filterItems[
-                            this.state.filterItems.length - 1
+                        this.props.filterItems[
+                            this.props.filterItems.length - 1
                         ].dueInHours
                     }h`}
                 </Headline>
                 <Slider
                     style={styles.filterSlider}
                     minimumValue={0}
-                    maximumValue={this.state.filterItems.length - 1}
+                    maximumValue={this.props.filterItems.length - 1}
                     value={this.getSliderValue()}
                     step={1}
                     onValueChange={filterValueIndex =>
                         this.setState({
-                            filterValue: this.state.filterItems[
+                            filterValue: this.props.filterItems[
                                 filterValueIndex
                             ],
                         })
                     }
+                    onSlidingComplete={this.submitFilter}
                     minimumTrackTintColor={colors.dark}
                     maximumTrackTintColor={colors.primary}
                 />
                 <Picker
                     style={filterPickerConfigStyle}
-                    onValueChange={filterValue => {
-                        this.setState({
-                            filterValue: this.state.filterItems.find(
-                                (item: TFilterItem) =>
-                                    item.projectId === filterValue,
-                            ),
-                        });
-                    }}
+                    onValueChange={this.pickerOnValueChanged}
                     placeholder={{
                         label: 'Select due date',
                         key: 'picker_key_placeholder',
@@ -176,6 +165,7 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
                             this.state.filterValue.projectId) ||
                         null
                     }
+                    onDonePress={this.submitFilter}
                 />
             </View>
         );
