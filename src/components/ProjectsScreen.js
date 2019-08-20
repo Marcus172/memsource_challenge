@@ -20,6 +20,7 @@ import styles from 'styles/ProjectsScreen.style.js';
 
 import type { NavigationScreenProp, NavigationState } from 'react-navigation';
 import type { TFilterItem, TPickerItem } from 'config/types.js';
+import colors from 'styles/colors.js';
 
 type TProps = {
     projects: Array<Project>,
@@ -151,8 +152,8 @@ class ProjectsScreen extends PureComponent<TProps, TState> {
                             ],
                         })
                     }
-                    minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#000000"
+                    minimumTrackTintColor={colors.dark}
+                    maximumTrackTintColor={colors.primary}
                 />
                 <Picker
                     style={filterPickerConfigStyle}

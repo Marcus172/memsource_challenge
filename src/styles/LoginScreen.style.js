@@ -43,7 +43,7 @@ export default StyleSheet.create({
         marginBottom: 5,
     },
     loginButton: {
-        backgroundColor: colors.buttonBackgroundColor,
+        backgroundColor: colors.primary,
         borderRadius: 5,
         height: 45,
         marginTop: 20,

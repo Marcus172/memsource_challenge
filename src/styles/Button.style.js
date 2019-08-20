@@ -8,7 +8,7 @@ import colors from 'styles/colors.js';
 
 export default StyleSheet.create({
     button: {
-        backgroundColor: colors.buttonBackgroundColor,
+        backgroundColor: colors.primary,
         borderRadius: 5,
         height: 45,
         marginTop: 20,
